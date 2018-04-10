@@ -1,10 +1,14 @@
 #include "Member.h"
 
-using namespace std;
+using namespace Member;
 
-int Member::counter = 0;	
+int counter = 0;	
+	
+Member(){	
+	counter++;
+}
 
-Member::~Member(){
+~Member(){
 	for(int i=0 ;i<followers.size(); i++){
 		followers[i]->unfollow(*this);
 	}
@@ -14,39 +18,34 @@ Member::~Member(){
 	counter--;
 	followers.clear();
 	following.clear();
-	
-	
 }
-	
-Member::Member(){	
-	counter++;
-}
-	
- int Member::count(){
+
+ int count(){
 	return counter;
 }
 	
-	
-int Member::numFollowers(){
+int numFollowers(){
 	return this->followers.size();
 }
-int Member::numFollowing(){
+
+int numFollowing(){
 	return following.size();
 }
 	
-void Member::follow(Member& person){
-	Member *p = &person; 	
+void follow(Member& person){
+	Member *p = &person; 
+	if(this==p)
+		return;
+
 	for(int i=0; i<following.size(); i++){
-		if(following[i] == p){
-			std::cout<<" here"<<endl;
+		if(following[i] == p)
 			return;
-		}
 	}	
 	following.push_back(p);
 	p->followers.push_back(this);	
 }
 	
-void Member::unfollow(Member& person){
+void unfollow(Member& person){
 	Member *p = &person; 
 	int flag = 0;
 	for(int i=0; i<following.size(); i++){
@@ -55,14 +54,12 @@ void Member::unfollow(Member& person){
 			flag = 1;
 		}
 	}
+
 	if(flag == 0) return;
-	
 	for(int i=0; i< p->followers.size(); i++){
 		if(p->followers[i] == this){
 			p->followers.erase(p->followers.begin()+i);
 			return;
 		}
 	}
-	
 }
-
