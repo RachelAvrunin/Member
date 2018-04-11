@@ -1,4 +1,5 @@
 #include "Member.h"
+using namespace std;
 
 int Member::counter = 0;	
 
