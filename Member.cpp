@@ -1,14 +1,12 @@
 #include "Member.h"
 
-using namespace Member;
+int Member::counter = 0;	
 
-int counter = 0;	
-	
-Member(){	
+Member::Member(){	
 	counter++;
 }
 
-~Member(){
+Member::~Member(){
 	for(int i=0 ;i<followers.size(); i++){
 		followers[i]->unfollow(*this);
 	}
@@ -20,32 +18,31 @@ Member(){
 	following.clear();
 }
 
- int count(){
+ int Member::count(){
 	return counter;
 }
 	
-int numFollowers(){
+int Member::numFollowers(){
 	return this->followers.size();
 }
 
-int numFollowing(){
+int Member::numFollowing(){
 	return following.size();
 }
 	
-void follow(Member& person){
+void Member::follow(Member& person){
 	Member *p = &person; 
 	if(this==p)
 		return;
-
-	for(int i=0; i<following.size(); i++){
+	for(int i=0; i<following.size(); i++)
 		if(following[i] == p)
 			return;
-	}	
+	
 	following.push_back(p);
 	p->followers.push_back(this);	
 }
-	
-void unfollow(Member& person){
+
+void Member::unfollow(Member& person){
 	Member *p = &person; 
 	int flag = 0;
 	for(int i=0; i<following.size(); i++){
@@ -54,12 +51,13 @@ void unfollow(Member& person){
 			flag = 1;
 		}
 	}
-
 	if(flag == 0) return;
+	
 	for(int i=0; i< p->followers.size(); i++){
 		if(p->followers[i] == this){
 			p->followers.erase(p->followers.begin()+i);
 			return;
 		}
 	}
+	
 }
